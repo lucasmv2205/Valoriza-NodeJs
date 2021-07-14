@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
 export class CreateCompliments1626302471554 implements MigrationInterface {
 
@@ -37,9 +37,47 @@ export class CreateCompliments1626302471554 implements MigrationInterface {
                         type: "timestamp",
                         default: "now()",
                     }
-                ]
+                ],
+                foreignKeys: [
+                    {
+                        name: "FKUserSenderCompliments",
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["user_sender"],
+                        onDelete: "SET NULL",
+                        onUpdate: "SET NULL"
+                    },
+                    {
+                        name: "FKUserReceiverCompliments",
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["user_receiver"],
+                        onDelete: "SET NULL",
+                        onUpdate: "SET NULL"
+                    },
+                    {
+                        name: "FKTagCompliments",
+                        referencedTableName: "tags",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["tag_id"],
+                        onDelete: "SET NULL",
+                        onUpdate: "SET NULL"
+                    }
+                ],
             })
-        )
+        );
+
+        // await queryRunner.createForeignKey(
+        //     "compliments",
+        //     new TableForeignKey({
+        //         name: "FKUserSenderCompliments",
+        //         referencedTableName: "users",
+        //         referencedColumnNames: ["id"],
+        //         columnNames: ["user_sender"],
+        //         onDelete: "SET NULL",
+        //         onUpdate: "SET NULL"
+        //     })
+        // );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
